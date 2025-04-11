@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { checkStudentKnowledge } from "../src/studentKnowledgeCheckerUtil.js";
 
 describe("checkStudentKnowledge", () => {
-  it("должна вернуть true, если все ответы совпадают", () => {
+  it("should return true if all answers match", () => {
     const studentAnswers = {
       q1: "A",
       q2: "B",
@@ -18,7 +18,7 @@ describe("checkStudentKnowledge", () => {
     expect(checkStudentKnowledge(studentAnswers, correctAnswers)).to.be.true;
   });
 
-  it("должна вернуть false, если хотя бы один ответ неверный", () => {
+  it("should return false if at least one answer is incorrect", () => {
     const studentAnswers = {
       q1: "A",
       q2: "X",
@@ -34,7 +34,7 @@ describe("checkStudentKnowledge", () => {
     expect(checkStudentKnowledge(studentAnswers, correctAnswers)).to.be.false;
   });
 
-  it("должна вернуть false, если ключи не совпадают", () => {
+  it("should return false if keys do not match", () => {
     const studentAnswers = {
       q1: "A",
       q2: "B",
@@ -49,7 +49,7 @@ describe("checkStudentKnowledge", () => {
     expect(checkStudentKnowledge(studentAnswers, correctAnswers)).to.be.false;
   });
 
-  it("должна вернуть false, если порядок ключей разный", () => {
+  it("should return false if keys are in different order", () => {
     const studentAnswers = {
       q3: "C",
       q2: "B",

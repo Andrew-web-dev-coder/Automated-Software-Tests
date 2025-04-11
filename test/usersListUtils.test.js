@@ -14,53 +14,53 @@ describe("usersListUtils", () => {
   ];
 
   describe("filterUsersByAge", () => {
-    it("должна вернуть пользователей в указанном возрастном диапазоне", () => {
+    it("should return users within the specified age range", () => {
       const result = filterUsersByAge(mockUsers, 26, 36);
       expect(result).to.deep.equal([mockUsers[1], mockUsers[2]]);
     });
 
-    it("должна выбрасывать ошибку, если вход не массив", () => {
+    it("should throw an error if input is not an array", () => {
       expect(() => filterUsersByAge({}, 20, 30)).to.throw("Users must be an array");
     });
   });
 
   describe("sortUsersByName", () => {
-    it("должна сортировать пользователей по имени в алфавитном порядке", () => {
+    it("should sort users alphabetically by name", () => {
       const result = sortUsersByName(mockUsers);
       expect(result.map(u => u.name)).to.eql(["Alice", "Bob", "Charlie"]);
     });
 
-    it("должна выбрасывать ошибку, если вход не массив", () => {
+    it("should throw an error if input is not an array", () => {
       expect(() => sortUsersByName("not array")).to.throw("Users must be an array");
     });
   });
 
   describe("findUserById", () => {
-    it("должна находить пользователя по id", () => {
+    it("should find a user by id", () => {
       const result = findUserById(mockUsers, 2);
       expect(result).to.deep.equal(mockUsers[1]);
     });
 
-    it("должна вернуть null, если пользователь не найден", () => {
+    it("should return null if user is not found", () => {
       const result = findUserById(mockUsers, 100);
       expect(result).to.be.null;
     });
 
-    it("должна выбрасывать ошибку, если вход не массив", () => {
+    it("should throw an error if input is not an array", () => {
       expect(() => findUserById(null, 2)).to.throw("Users must be an array");
     });
   });
 
   describe("isEmailTaken", () => {
-    it("должна возвращать true, если email уже существует", () => {
+    it("should return true if the email already exists", () => {
       expect(isEmailTaken(mockUsers, "bob@example.com")).to.be.true;
     });
 
-    it("должна возвращать false, если email не найден", () => {
+    it("should return false if the email is not found", () => {
       expect(isEmailTaken(mockUsers, "notfound@example.com")).to.be.false;
     });
 
-    it("должна выбрасывать ошибку, если вход не массив", () => {
+    it("should throw an error if input is not an array", () => {
       expect(() => isEmailTaken(123, "bob@example.com")).to.throw("Users must be an array");
     });
   });
