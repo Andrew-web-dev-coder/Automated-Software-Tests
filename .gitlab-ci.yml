@@ -1,12 +1,8 @@
 stages:
   - lint
 
-eslint:
-  stage: lint
-  script:
-    - npm ci
-    - npx eslint .
-  only:
-    - merge_requests
-    - main
-
+  lint:
+    stage: lint
+    script:
+      - npm install
+      - npx eslint
