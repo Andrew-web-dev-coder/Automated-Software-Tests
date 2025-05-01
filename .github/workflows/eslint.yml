@@ -12,4 +12,4 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npx eslint .
+      - run: node --loader=node --no-warnings ./node_modules/eslint/bin/eslint.js .
