@@ -1,15 +1,26 @@
 name: ESLint Check
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main, static-code-analysis-and-ci]
+  pull_request:
+    branches: [main]
 
 jobs:
   eslint:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-      - run: npm ci
-      - run: node --loader=node --no-warnings ./node_modules/eslint/bin/eslint.js .
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint
+        run: node --no-warnings ./node_modules/eslint/bin/eslint.js --config ./eslint.config.js .
