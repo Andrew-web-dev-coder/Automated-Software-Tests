@@ -1,7 +1,7 @@
 stages:
   - lint
 
-lint:
+  lint:
     stage: lint
     script:
       - npm install

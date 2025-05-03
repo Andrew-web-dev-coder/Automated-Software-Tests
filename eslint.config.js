@@ -1,19 +1,24 @@
-module.exports = {
-  files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+export default {
+  ignores: ['coverage/'],
+  files: ['**/*.js'],
   languageOptions: {
     ecmaVersion: 2021,
     sourceType: 'module',
     globals: {
       browser: true,
       node: true,
+      mocha: true,
+      describe: true,
+      it: true,
+      module: true,
     },
   },
   rules: {
     // Code style
-    'quotes': ['error', 'single'], // Use single quotes
+    quotes: ['error', 'single'], // Use single quotes
     'max-len': ['error', { code: 120 }], // Maximum line length of 120 characters
-    'semi': ['error', 'always'], // Require semicolons
-    'indent': ['error', 2], // Indentation of 2 spaces
+    semi: ['error', 'always'], // Require semicolons
+    indent: ['error', 2], // Indentation of 2 spaces
     'no-trailing-spaces': 'error', // Disallow trailing spaces at the end of lines
     'eol-last': ['error', 'always'], // Require a newline at the end of files
     'no-multiple-empty-lines': ['error', { max: 1 }], // Maximum of one consecutive empty line
@@ -24,7 +29,7 @@ module.exports = {
     'no-var': 'error', // Disallow the use of var
     'prefer-const': 'error', // Prefer const for variables that are not reassigned
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }], // Disallow unused variables
-    'camelcase': ['error', { properties: 'always' }], // Enforce camelCase naming convention
+    camelcase: ['error', { properties: 'always' }], // Enforce camelCase naming convention
 
     // Rules for functions
     'arrow-spacing': ['error', { before: true, after: true }], // Require space around the arrow in arrow functions
@@ -33,9 +38,9 @@ module.exports = {
     'no-console': 'warn', // Allow console statements with a warning
 
     // Logic and structure
-    'eqeqeq': ['error', 'always'], // Require the use of === and !== instead of == and !=
+    eqeqeq: ['error', 'always'], // Require the use of === and !== instead of == and !=
     'no-else-return': 'error', // Disallow else after return
-    'curly': ['error', 'all'], // Require curly braces for all blocks
+    curly: ['error', 'all'], // Require curly braces for all blocks
     'no-fallthrough': 'error', // Disallow fallthrough in switch cases
     'default-case': 'error', // Require a default case in switch statements
 
