@@ -2,7 +2,7 @@ export function findMax(arr) {
   if (!Array.isArray(arr)) {
     throw new Error('Input must be an array');
   }
-  return Math.max(...arr)
+  return Math.max(...arr);
 }
 
 export function findMin(arr) {
