@@ -1,0 +1,164 @@
+# Test info
+
+- Name: DemoQA Tool Tips Tests >> Verify text field tooltip
+- Location: C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\tooltips.spec.js:30:5
+
+# Error details
+
+```
+TimeoutError: page.waitForLoadState: Timeout 15000ms exceeded.
+=========================== logs ===========================
+  "load" event fired
+============================================================
+    at ToolTipsPage.navigate (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\pages\ToolTipsPage.js:23:25)
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\tooltips.spec.js:11:13
+```
+
+# Page snapshot
+
+```yaml
+- img "adplus-dvertising"
+- iframe
+- banner:
+  - link:
+    - /url: https://demoqa.com
+    - img
+- img
+- text: Elements
+- img
+- img
+- text: Forms
+- img
+- img
+- text: Alerts, Frame & Windows
+- img
+- img
+- text: Widgets
+- img
+- list:
+  - listitem:
+    - img
+    - text: Accordian
+  - listitem:
+    - img
+    - text: Auto Complete
+  - listitem:
+    - img
+    - text: Date Picker
+  - listitem:
+    - img
+    - text: Slider
+  - listitem:
+    - img
+    - text: Progress Bar
+  - listitem:
+    - img
+    - text: Tabs
+  - listitem:
+    - img
+    - text: Tool Tips
+  - listitem:
+    - img
+    - text: Menu
+  - listitem:
+    - img
+    - text: Select Menu
+- img
+- text: Interactions
+- img
+- img
+- text: Book Store Application
+- img
+- iframe
+- heading "Tool Tips" [level=1]
+- paragraph: Practice Tool Tips
+- button "Hover me to see"
+- textbox "Hover me to see"
+- link "Contrary":
+  - /url: javascript:void(0)
+- text: to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections
+- link "1.10.32":
+  - /url: javascript:void(0)
+- text: and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+- iframe
+- img "Build PlayWright tests with AI"
+- iframe
+- iframe
+- contentinfo: © 2013-2020 TOOLSQA.COM | ALL RIGHTS RESERVED.
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require('@playwright/test');
+   2 |
+   3 | class ToolTipsPage {
+   4 |     constructor(page) {
+   5 |         this.page = page;
+   6 |         this.url = 'https://demoqa.com/tool-tips';
+   7 |         
+   8 |         // Улучшенные локаторы
+   9 |         this.hoverButton = page.locator('#toolTipButton');
+  10 |         this.hoverTextField = page.locator('#toolTipTextField');
+  11 |         this.buttonTooltip = page.locator('.tooltip-inner', { hasText: 'You hovered over the Button' });
+  12 |         this.textFieldTooltip = page.locator('.tooltip-inner', { hasText: 'You hovered over the text field' });
+  13 |     }
+  14 |
+  15 |     async navigate() {
+  16 |         // Упрощенная навигация с базовыми проверками
+  17 |         await this.page.goto(this.url, { 
+  18 |             waitUntil: 'domcontentloaded',
+  19 |             timeout: 30000 
+  20 |         });
+  21 |         
+  22 |         // Ждем загрузки основных элементов
+> 23 |         await this.page.waitForLoadState('networkidle', { timeout: 15000 });
+     |                         ^ TimeoutError: page.waitForLoadState: Timeout 15000ms exceeded.
+  24 |         await this.page.waitForSelector('#toolTipButton', { 
+  25 |             state: 'attached',
+  26 |             timeout: 20000 
+  27 |         });
+  28 |     }
+  29 |
+  30 |     async verifyButtonTooltip() {
+  31 |         // Улучшенная проверка с retry
+  32 |         await this.retryHoverAndCheck(
+  33 |             this.hoverButton,
+  34 |             this.buttonTooltip,
+  35 |             'You hovered over the Button'
+  36 |         );
+  37 |     }
+  38 |
+  39 |     async verifyTextFieldTooltip() {
+  40 |         await this.retryHoverAndCheck(
+  41 |             this.hoverTextField,
+  42 |             this.textFieldTooltip,
+  43 |             'You hovered over the text field'
+  44 |         );
+  45 |     }
+  46 |
+  47 |     async retryHoverAndCheck(element, tooltip, expectedText, retries = 3) {
+  48 |         for (let i = 0; i < retries; i++) {
+  49 |             try {
+  50 |                 await element.scrollIntoViewIfNeeded();
+  51 |                 await element.hover();
+  52 |                 
+  53 |                 // Ждем появления тултипа
+  54 |                 await tooltip.waitFor({ 
+  55 |                     state: 'visible',
+  56 |                     timeout: 10000 
+  57 |                 });
+  58 |                 
+  59 |                 await expect(tooltip).toBeVisible();
+  60 |                 await expect(tooltip).toHaveText(expectedText);
+  61 |                 return;
+  62 |             } catch (error) {
+  63 |                 if (i === retries - 1) throw error;
+  64 |                 await this.page.waitForTimeout(1000);
+  65 |             }
+  66 |         }
+  67 |     }
+  68 | }
+  69 |
+  70 | module.exports = ToolTipsPage;
+```

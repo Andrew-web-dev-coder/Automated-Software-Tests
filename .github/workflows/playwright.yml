@@ -41,6 +41,9 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
       
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline
+      
       - name: Run tests
         run: |
           npx playwright test \
@@ -76,3 +79,8 @@ jobs:
           name: screenshots
           path: test-results/**/*.png
           retention-days: 7
+      
+      - name: Show Playwright logs on failure
+        if: failure()
+        run: |
+          cat playwright-report/*.log || true

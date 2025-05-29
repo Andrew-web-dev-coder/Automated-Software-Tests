@@ -1,0 +1,44 @@
+Navigation failed: page.waitForLoadState: Timeout 15000ms exceeded.
+=========================== logs ===========================
+  "load" event fired
+============================================================
+    at ToolTipsPage.navigate (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\pages\ToolTipsPage.js:23:25)
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\tooltips.spec.js:11:13 {
+  name: 'TimeoutError',
+  [Symbol(step)]: {
+    stepId: 'pw:api@10',
+    location: {
+      file: 'C:\\Users\\aleksandr.shepilov\\Desktop\\Automated-Software-Tests\\tests\\pages\\ToolTipsPage.js',
+      line: 23,
+      column: 25,
+      function: 'ToolTipsPage.navigate'
+    },
+    category: 'pw:api',
+    title: 'page.waitForLoadState',
+    apiName: 'page.waitForLoadState',
+    params: { info: [Object] },
+    boxedStack: undefined,
+    steps: [],
+    attachmentIndices: [],
+    info: TestStepInfoImpl {
+      annotations: [],
+      _testInfo: [TestInfoImpl],
+      _stepId: 'pw:api@10'
+    },
+    complete: [Function: complete],
+    endWallTime: 1748557057223,
+    error: {
+      message: 'TimeoutError: page.waitForLoadState: Timeout 15000ms exceeded.\n' +
+        '=========================== logs ===========================\n' +
+        '  "load" event fired\n' +
+        '============================================================',
+      stack: 'TimeoutError: page.waitForLoadState: Timeout 15000ms exceeded.\n' +
+        '=========================== logs ===========================\n' +
+        '  "load" event fired\n' +
+        '============================================================\n' +
+        '    at ToolTipsPage.navigate (C:\\Users\\aleksandr.shepilov\\Desktop\\Automated-Software-Tests\\tests\\pages\\ToolTipsPage.js:23:25)\n' +
+        '    at C:\\Users\\aleksandr.shepilov\\Desktop\\Automated-Software-Tests\\tests\\specs\\tooltips.spec.js:11:13',
+      cause: undefined
+    }
+  }
+}
