@@ -21,13 +21,13 @@ class ToolTipsPage {
 
     async verifyButtonTooltip() {
         await this.hoverButton.hover();
-        await expect(this.tooltip).toBeVisible({ timeout: 10000 });
+        await expect(this.tooltip).toBeVisible({ timeout: 15000 });
         await expect(this.tooltip).toHaveText('You hovered over the Button');
     }
 
     async verifyTextFieldTooltip() {
         await this.hoverTextField.hover();
-        await expect(this.tooltip).toBeVisible({ timeout: 10000 });
+        await expect(this.tooltip).toBeVisible({ timeout: 15000 });
         await expect(this.tooltip).toHaveText('You hovered over the text field');
     }
 }

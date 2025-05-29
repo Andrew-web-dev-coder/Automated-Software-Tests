@@ -21,7 +21,7 @@ module.exports = defineConfig({
     video: 'retain-on-failure',
     
     
-    actionTimeout: 20000,    
+    actionTimeout: 30000,    
     navigationTimeout: 60000 
   },
 

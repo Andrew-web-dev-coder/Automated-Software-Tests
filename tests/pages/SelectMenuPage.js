@@ -3,12 +3,10 @@ class SelectMenuPage {
         this.page = page;
         this.url = 'https://demoqa.com/select-menu';
         
-        
         this.selectValueDropdown = page.locator('div#withOptGroup');
         this.selectOneDropdown = page.locator('div#selectOne');
         this.oldStyleSelect = page.locator('#oldSelectMenu');
         this.multiSelectDropdown = page.locator('#cars');
-        
         
         this.selectedGroupValue = page.locator('div#withOptGroup div.css-1uccc91-singleValue');
         this.selectedOneValue = page.locator('div#selectOne div.css-1uccc91-singleValue');
