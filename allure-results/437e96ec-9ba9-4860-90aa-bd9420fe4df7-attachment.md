@@ -1,0 +1,143 @@
+# Test info
+
+- Name: DemoQA Select Menu Tests >> should select old style color
+- Location: C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\selectmenu.spec.js:24:5
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "green"
+Received: "2"
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\selectmenu.spec.js:27:32
+```
+
+# Page snapshot
+
+```yaml
+- img "adplus-dvertising"
+- banner:
+  - link:
+    - /url: https://demoqa.com
+    - img
+- img
+- text: Elements
+- img
+- img
+- text: Forms
+- img
+- img
+- text: Alerts, Frame & Windows
+- img
+- img
+- text: Widgets
+- img
+- list:
+  - listitem:
+    - img
+    - text: Accordian
+  - listitem:
+    - img
+    - text: Auto Complete
+  - listitem:
+    - img
+    - text: Date Picker
+  - listitem:
+    - img
+    - text: Slider
+  - listitem:
+    - img
+    - text: Progress Bar
+  - listitem:
+    - img
+    - text: Tabs
+  - listitem:
+    - img
+    - text: Tool Tips
+  - listitem:
+    - img
+    - text: Menu
+  - listitem:
+    - img
+    - text: Select Menu
+- img
+- text: Interactions
+- img
+- img
+- text: Book Store Application
+- img
+- heading "Select Menu" [level=1]
+- text: Select Value Select Option
+- textbox
+- text: Select One Select Title
+- textbox
+- text: Old Style Select Menu
+- combobox:
+  - option "Red"
+  - option "Blue"
+  - option "Green" [selected]
+  - option "Yellow"
+  - option "Purple"
+  - option "Black"
+  - option "White"
+  - option "Voilet"
+  - option "Indigo"
+  - option "Magenta"
+  - option "Aqua"
+- paragraph: Multiselect drop down
+- text: Select...
+- textbox
+- paragraph: Standard multi select
+- listbox:
+  - option "Volvo"
+  - option "Saab"
+  - option "Opel"
+  - option "Audi"
+- img "Build PlayWright tests with AI"
+- iframe
+- contentinfo: © 2013-2020 TOOLSQA.COM | ALL RIGHTS RESERVED.
+```
+
+# Test source
+
+```ts
+   1 | const { test, expect } = require('@playwright/test');
+   2 | const SelectMenuPage = require('../pages/SelectMenuPage'); // Импорт класса
+   3 |
+   4 | test.describe('DemoQA Select Menu Tests', () => {
+   5 |     let selectMenuPage;
+   6 |
+   7 |     test.beforeEach(async ({ page }) => {
+   8 |         selectMenuPage = new SelectMenuPage(page);
+   9 |         await selectMenuPage.navigate();
+  10 |     });
+  11 |
+  12 |     test('should select group option', async () => {
+  13 |         await selectMenuPage.selectGroupOption();
+  14 |         const selectedValue = await selectMenuPage.selectedValues.first().textContent();
+  15 |         expect(selectedValue).toContain('Group 2, option 1');
+  16 |     });
+  17 |
+  18 |     test('should select other option', async () => {
+  19 |         await selectMenuPage.selectOtherOption();
+  20 |         const selectedValue = await selectMenuPage.selectedValues.nth(1).textContent();
+  21 |         expect(selectedValue).toBe('Other');
+  22 |     });
+  23 |
+  24 |     test('should select old style color', async () => {
+  25 |         await selectMenuPage.selectOldStyleColor();
+  26 |         const selectedOption = await selectMenuPage.oldStyleSelect.inputValue();
+> 27 |         expect(selectedOption).toBe('green');
+     |                                ^ Error: expect(received).toBe(expected) // Object.is equality
+  28 |     });
+  29 |
+  30 |     test('should select multi colors', async () => {
+  31 |         await selectMenuPage.selectMultiColors();
+  32 |         const selectedOptions = await selectMenuPage.multiSelectDropdown.evaluate(select => {
+  33 |             return Array.from(select.selectedOptions).map(option => option.value);
+  34 |         });
+  35 |         expect(selectedOptions).toEqual(expect.arrayContaining(['volvo', 'opel']));
+  36 |     });
+  37 | });
+```
