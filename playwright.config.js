@@ -16,6 +16,7 @@ module.exports = defineConfig({
     ['list']
   ],
   
+  
   use: {
     actionTimeout: 10000,
     navigationTimeout: 30000,
