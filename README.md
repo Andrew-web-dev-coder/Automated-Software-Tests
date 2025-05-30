@@ -19,4 +19,4 @@ Tests run automatically:
 
 ## Reports
 HTML report: `playwright-report/index.html`
-Allure report: `allure-report/index.html` (if configured)
+Allure report: `allure-report/index.html` 
