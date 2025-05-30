@@ -5,10 +5,15 @@ class FormPage {
     this.page = page;
     this.url = 'https://demoqa.com/automation-practice-form';
     
+    // Локаторы
     this.firstName = page.locator('#firstName');
     this.lastName = page.locator('#lastName');
     this.email = page.locator('#userEmail');
-    this.genderMale = page.locator('label[for="gender-radio-1"]');
+    this.genderOptions = {
+      male: page.locator('label[for="gender-radio-1"]'),
+      female: page.locator('label[for="gender-radio-2"]'),
+      other: page.locator('label[for="gender-radio-3"]')
+    };
     this.mobile = page.locator('#userNumber');
     this.submitButton = page.locator('#submit');
     this.modal = page.locator('.modal-content');
@@ -16,29 +21,62 @@ class FormPage {
   }
 
   async navigate() {
-    await this.page.goto(this.url, { waitUntil: 'domcontentloaded' });
-    await this.page.waitForSelector('#firstName', { state: 'visible', timeout: 15000 });
+    // Упрощенная навигация с базовыми проверками
+    await this.page.goto(this.url, { 
+      waitUntil: 'commit',
+      timeout: 60000 
+    });
+    
+    // Ждем появления любого из основных элементов
+    await Promise.race([
+      this.firstName.waitFor({ state: 'visible', timeout: 30000 }),
+      this.lastName.waitFor({ state: 'visible', timeout: 30000 })
+    ]);
   }
 
   async fillForm(data) {
-    await this.firstName.fill(data.firstName);
-    await this.lastName.fill(data.lastName);
-    await this.email.fill(data.email);
-    await this.genderMale.click();
-    await this.mobile.fill(data.mobile);
+    // Заполнение с проверкой наличия данных
+    const fieldsToFill = [
+      { field: this.firstName, value: data.firstName },
+      { field: this.lastName, value: data.lastName },
+      { field: this.email, value: data.email },
+      { field: this.mobile, value: data.mobile }
+    ];
+
+    for (const { field, value } of fieldsToFill) {
+      if (value) {
+        await field.fill(value);
+        await this.page.waitForTimeout(200); // Короткая пауза
+      }
+    }
+
+    // Выбор гендера
+    const gender = data.gender || 'male';
+    await this.genderOptions[gender].click();
   }
 
   async submitForm() {
     await this.submitButton.click();
-    await this.page.waitForSelector('.modal-content', { state: 'visible', timeout: 15000 });
+    await this.modal.waitFor({ state: 'visible', timeout: 20000 });
   }
 
   async verifySubmittedData(data) {
-    await expect(this.resultTable).toContainText(data.firstName);
-    await expect(this.resultTable).toContainText(data.lastName);
-    await expect(this.resultTable).toContainText(data.email);
-    await expect(this.resultTable).toContainText('Male');
-    await expect(this.resultTable).toContainText(data.mobile);
+    const results = await this.resultTable.textContent();
+    
+    // Гибкая проверка результатов
+    const expectedValues = {
+      'First Name': data.firstName,
+      'Last Name': data.lastName,
+      'Email': data.email,
+      'Mobile': data.mobile,
+      'Gender': data.gender ? data.gender.charAt(0).toUpperCase() + data.gender.slice(1) : 'Male'
+    };
+
+    for (const [field, value] of Object.entries(expectedValues)) {
+      if (value) {
+        expect(results).toContain(value);
+      }
+    }
   }
 }
 

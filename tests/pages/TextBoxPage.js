@@ -18,27 +18,32 @@ class TextBoxPage {
   }
 
   async fillForm(data) {
-    // Заполняем поля с ожиданием после каждого действия
-    await this.fullNameInput.fill(data.fullName);
-    await this.page.waitForTimeout(500);
-    await this.emailInput.fill(data.email);
-    await this.page.waitForTimeout(500);
-    await this.currentAddressInput.fill(data.currentAddress);
-    await this.page.waitForTimeout(500);
-    await this.permanentAddressInput.fill(data.permanentAddress);
-    await this.page.waitForTimeout(1000);
+    if (data.fullName) {
+      await this.fullNameInput.fill(data.fullName);
+      await this.page.waitForTimeout(500);
+    }
+    if (data.email) {
+      await this.emailInput.fill(data.email);
+      await this.page.waitForTimeout(500);
+    }
+    if (data.currentAddress) {
+      await this.currentAddressInput.fill(data.currentAddress);
+      await this.page.waitForTimeout(500);
+    }
+    if (data.permanentAddress) {
+      await this.permanentAddressInput.fill(data.permanentAddress);
+      await this.page.waitForTimeout(500);
+    }
   }
 
   async submitForm() {
     await this.submitButton.click();
-    // Комбинированное ожидание - сначала пауза, потом проверка видимости
     await this.page.waitForTimeout(2000);
     await expect(this.output).toBeVisible({ timeout: 30000 });
   }
 
   async verifyOutput(data) {
     const outputText = await this.output.textContent();
-    // Мягкие проверки с contains вместо точного соответствия
     if (data.fullName) expect(outputText).toContain(data.fullName.trim());
     if (data.email) expect(outputText).toContain(data.email.trim());
     if (data.currentAddress) expect(outputText).toContain(data.currentAddress.trim());
