@@ -2,7 +2,7 @@ const { test } = require('@playwright/test');
 const FormPage = require('../pages/FormPage');
 const { faker } = require('@faker-js/faker');
 
-// Генератор тестовых данных (без задержки)
+
 const generateTestData = (options = {}) => ({
   firstName: options.firstName || faker.person.firstName(),
   lastName: options.lastName || faker.person.lastName(),
@@ -11,7 +11,7 @@ const generateTestData = (options = {}) => ({
   gender: options.gender || ['male', 'female', 'other'][Math.floor(Math.random() * 3)]
 });
 
-// Тестовые случаи
+
 const testCases = [
   {
     title: 'Standard valid data',
@@ -21,7 +21,7 @@ const testCases = [
   {
     title: 'Long names',
     data: generateTestData({
-      firstName: faker.string.alpha({ length: 30 }), // Уменьшено для стабильности
+      firstName: faker.string.alpha({ length: 30 }),
       lastName: faker.string.alpha({ length: 30 })
     }),
     description: 'should handle long names @slow',
@@ -43,10 +43,10 @@ test.describe('DemoQA Form Tests', () => {
   test.beforeEach(async ({ page }) => {
     formPage = new FormPage(page);
     await formPage.navigate();
-    await page.waitForTimeout(1000); // Стабилизация
+    await page.waitForTimeout(1000); 
   });
 
-  // Базовый тест
+  
   test('Submit form with valid data', async () => {
     const data = generateTestData();
     await formPage.fillForm(data);
@@ -54,7 +54,7 @@ test.describe('DemoQA Form Tests', () => {
     await formPage.verifySubmittedData(data);
   });
 
-  // Параметризованные тесты
+  
   for (const testCase of testCases) {
     test(testCase.description, async () => {
       await formPage.fillForm(testCase.data);

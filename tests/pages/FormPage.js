@@ -5,7 +5,7 @@ class FormPage {
     this.page = page;
     this.url = 'https://demoqa.com/automation-practice-form';
     
-    // Локаторы
+    
     this.firstName = page.locator('#firstName');
     this.lastName = page.locator('#lastName');
     this.email = page.locator('#userEmail');
@@ -21,13 +21,13 @@ class FormPage {
   }
 
   async navigate() {
-    // Упрощенная навигация с базовыми проверками
+    
     await this.page.goto(this.url, { 
       waitUntil: 'commit',
       timeout: 60000 
     });
     
-    // Ждем появления любого из основных элементов
+    
     await Promise.race([
       this.firstName.waitFor({ state: 'visible', timeout: 30000 }),
       this.lastName.waitFor({ state: 'visible', timeout: 30000 })
@@ -35,7 +35,7 @@ class FormPage {
   }
 
   async fillForm(data) {
-    // Заполнение с проверкой наличия данных
+    
     const fieldsToFill = [
       { field: this.firstName, value: data.firstName },
       { field: this.lastName, value: data.lastName },
@@ -46,11 +46,11 @@ class FormPage {
     for (const { field, value } of fieldsToFill) {
       if (value) {
         await field.fill(value);
-        await this.page.waitForTimeout(200); // Короткая пауза
+        await this.page.waitForTimeout(200); 
       }
     }
 
-    // Выбор гендера
+    
     const gender = data.gender || 'male';
     await this.genderOptions[gender].click();
   }
@@ -63,7 +63,7 @@ class FormPage {
   async verifySubmittedData(data) {
     const results = await this.resultTable.textContent();
     
-    // Гибкая проверка результатов
+    
     const expectedValues = {
       'First Name': data.firstName,
       'Last Name': data.lastName,
