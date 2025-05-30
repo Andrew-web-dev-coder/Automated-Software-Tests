@@ -2,37 +2,27 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests/specs',
-  timeout: 90000, 
+  timeout: 60000,
   expect: {
-    timeout: 15000 
+    timeout: 10000
   },
   
-  fullyParallel: false, 
-  retries: process.env.CI ? 2 : 1, 
-  workers: process.env.CI ? 1 : 4, 
+  fullyParallel: true,
+  retries: 1,
+  workers: process.env.CI ? 2 : 4,
   
   reporter: [
     ['html', { open: 'never' }],
-    ['list'],
-    ['github'] 
+    ['list']
   ],
   
+  
   use: {
-    actionTimeout: 20000, 
-    navigationTimeout: 45000, 
-    trace: 'retain-on-failure', 
+    actionTimeout: 10000,
+    navigationTimeout: 30000,
+    trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'off',
-    
-    
-    launchOptions: {
-      firefoxUserPrefs: {
-        'dom.select_events.enabled': true,
-        'dom.webnotifications.enabled': false,
-        'browser.tabs.remote.autostart': false
-      },
-      args: ['--width=1280', '--height=720']
-    }
+    video: 'off'
   },
 
   projects: [
@@ -47,16 +37,7 @@ module.exports = defineConfig({
       name: 'firefox',
       use: { 
         ...devices['Desktop Firefox'],
-        viewport: { width: 1280, height: 720 },
-        
-        launchOptions: {
-          headless: true,
-          slowMo: 100, 
-          firefoxUserPrefs: {
-            'dom.webdriver.enabled': false,
-            'dom.input_events.enabled': true
-          }
-        }
+        viewport: { width: 1280, height: 720 }
       },
     }
   ]
