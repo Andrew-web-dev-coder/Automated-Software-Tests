@@ -7,29 +7,27 @@ test.describe('DemoQA Select Menu Tests', () => {
     test.beforeEach(async ({ page }) => {
         selectMenuPage = new SelectMenuPage(page);
         await selectMenuPage.navigate();
+        await page.waitForLoadState('networkidle'); 
     });
 
-    test('should select group option', async () => {
+    test('should select group option', async ({ page }) => {
         await selectMenuPage.selectGroupOption();
-        await expect(selectMenuPage.selectedGroupValue).toHaveText('Group 2, option 1', { timeout: 10000 });
+        await expect(selectMenuPage.selectedGroupValue).toHaveText('Group 2, option 1');
     });
 
-    test('should select other option', async () => {
+    test('should select other option', async ({ page }) => {
         await selectMenuPage.selectOtherOption();
-        await expect(selectMenuPage.selectedOneValue).toHaveText('Other', { timeout: 10000 });
+        await expect(selectMenuPage.selectedOneValue).toHaveText('Other');
     });
 
-    test('should select old style color', async () => {
+    test('should select old style color', async ({ page }) => {
         await selectMenuPage.selectOldStyleColor();
-        const value = await selectMenuPage.oldStyleSelect.inputValue();
-        expect(value).toBe('2'); 
+        await expect(page.locator('#oldSelectMenu')).toHaveValue('2');
     });
 
-    test('should select multi colors', async () => {
+    test('should select multi colors', async ({ page }) => {
         await selectMenuPage.selectMultiColors();
-        const options = await selectMenuPage.multiSelectDropdown.evaluate(select => 
-            Array.from(select.selectedOptions).map(o => o.value)
-        );
-        expect(options.sort()).toEqual(['opel', 'volvo'].sort());
+        await expect(page.locator('#cars option[value="volvo"]')).toBeSelected();
+        await expect(page.locator('#cars option[value="opel"]')).toBeSelected();
     });
 });
