@@ -9,25 +9,27 @@ test.describe('DemoQA Select Menu Tests', () => {
         await selectMenuPage.navigate();
     });
 
-    test('should select all required options @smoke', async () => {
-        await test.step('Perform all selections', async () => {
-            await selectMenuPage.performAllSelections();
-        });
+    test('should select group option', async () => {
+        await selectMenuPage.selectGroupOption();
+        await expect(selectMenuPage.selectedGroupValue).toHaveText('Group 2, option 1', { timeout: 10000 });
     });
 
-    test('should select value option', async () => {
-        await selectMenuPage.selectValueOption();
-    });
-
-    test('should select one option', async () => {
-        await selectMenuPage.selectOneOption();
+    test('should select other option', async () => {
+        await selectMenuPage.selectOtherOption();
+        await expect(selectMenuPage.selectedOneValue).toHaveText('Other', { timeout: 10000 });
     });
 
     test('should select old style color', async () => {
         await selectMenuPage.selectOldStyleColor();
+        const value = await selectMenuPage.oldStyleSelect.inputValue();
+        expect(value).toBe('2'); 
     });
 
-    test('should select multiple colors', async () => {
+    test('should select multi colors', async () => {
         await selectMenuPage.selectMultiColors();
+        const options = await selectMenuPage.multiSelectDropdown.evaluate(select => 
+            Array.from(select.selectedOptions).map(o => o.value)
+        );
+        expect(options.sort()).toEqual(['opel', 'volvo'].sort());
     });
 });
