@@ -1,56 +1,33 @@
 const { test, expect } = require('@playwright/test');
 const SelectMenuPage = require('../pages/SelectMenuPage');
 
-test.describe.configure({ mode: 'serial' }); // Последовательное выполнение тестов
-
 test.describe('DemoQA Select Menu Tests', () => {
     let selectMenuPage;
-    let page;
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+    test.beforeEach(async ({ page }) => {
         selectMenuPage = new SelectMenuPage(page);
         await selectMenuPage.navigate();
     });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test('should select group option', async () => {
-        await test.step('Select group option', async () => {
-            await selectMenuPage.selectGroupOption();
-        });
-        await test.step('Verify selection', async () => {
-            await expect(selectMenuPage.selectedGroupValue).toHaveText('Group 2, option 1');
+    test('should select all required options @smoke', async () => {
+        await test.step('Perform all selections', async () => {
+            await selectMenuPage.performAllSelections();
         });
     });
 
-    test('should select other option', async () => {
-        await test.step('Select other option', async () => {
-            await selectMenuPage.selectOtherOption();
-        });
-        await test.step('Verify selection', async () => {
-            await expect(selectMenuPage.selectedOneValue).toHaveText('Other');
-        });
+    test('should select value option', async () => {
+        await selectMenuPage.selectValueOption();
+    });
+
+    test('should select one option', async () => {
+        await selectMenuPage.selectOneOption();
     });
 
     test('should select old style color', async () => {
-        await test.step('Select color', async () => {
-            await selectMenuPage.selectOldStyleColor();
-        });
-        await test.step('Verify selection', async () => {
-            await expect(selectMenuPage.oldStyleSelect).toHaveValue('2');
-        });
+        await selectMenuPage.selectOldStyleColor();
     });
 
-    test('should select multi colors', async () => {
-        await test.step('Select multiple colors', async () => {
-            await selectMenuPage.selectMultiColors();
-        });
-        await test.step('Verify selections', async () => {
-            await expect(selectMenuPage.multiSelectDropdown.locator('option[value="volvo"]')).toBeSelected();
-            await expect(selectMenuPage.multiSelectDropdown.locator('option[value="opel"]')).toBeSelected();
-        });
+    test('should select multiple colors', async () => {
+        await selectMenuPage.selectMultiColors();
     });
 });

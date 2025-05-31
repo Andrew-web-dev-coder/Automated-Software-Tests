@@ -1,22 +1,15 @@
 # Automated Tests for DemoQA
 
 ## How to run
-1. Install dependencies:
-```bash
-npm install
-npx playwright install
-```
-
-2. Run tests:
-```bash
-npx playwright test --project=chromium --project=firefox
-```
+1. Install dependencies: `npm ci`
+2. Install browsers: `npx playwright install`
+3. Run tests: `npx playwright test`
 
 ## CI/CD
 Tests run automatically:
 - On every push to `main` branch
-- Daily at midnight (cron: '0 0 * * *')
+- On every pull request
+- Daily at midnight UTC
 
 ## Reports
-HTML report: `playwright-report/index.html`
-Allure report: `allure-report/index.html` 
+HTML reports available in `playwright-report/`
