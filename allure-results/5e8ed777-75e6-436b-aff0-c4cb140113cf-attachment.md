@@ -1,0 +1,179 @@
+# Test info
+
+- Name: DemoQA Select Menu Tests >> Select Group 2, option 1
+- Location: C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\selectmenu.spec.js:13:3
+
+# Error details
+
+```
+TimeoutError: locator.click: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator('#react-select-2-input')
+    - locator resolved to <input value="" type="text" tabindex="0" autocorrect="off" autocomplete="off" spellcheck="false" autocapitalize="none" aria-autocomplete="list" id="react-select-2-input"/>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div class=" css-1wa3eu0-placeholder">Select Option</div> intercepts pointer events
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is visible, enabled and stable
+      - scrolling into view if needed
+      - done scrolling
+      - <div class=" css-1wa3eu0-placeholder">Select Option</div> intercepts pointer events
+    - retrying click action
+      - waiting 100ms
+    28 × waiting for element to be visible, enabled and stable
+       - element is visible, enabled and stable
+       - scrolling into view if needed
+       - done scrolling
+       - <div class=" css-1wa3eu0-placeholder">Select Option</div> intercepts pointer events
+     - retrying click action
+       - waiting 500ms
+
+    at SelectMenuPage.selectGroupOption (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\pages\SelectMenuPage.js:22:33)
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\selectmenu.spec.js:14:26
+```
+
+# Page snapshot
+
+```yaml
+- img "adplus-dvertising"
+- banner:
+  - link:
+    - /url: https://demoqa.com
+    - img
+- img
+- text: Elements
+- img
+- img
+- text: Forms
+- img
+- img
+- text: Alerts, Frame & Windows
+- img
+- img
+- text: Widgets
+- img
+- list:
+  - listitem:
+    - img
+    - text: Accordian
+  - listitem:
+    - img
+    - text: Auto Complete
+  - listitem:
+    - img
+    - text: Date Picker
+  - listitem:
+    - img
+    - text: Slider
+  - listitem:
+    - img
+    - text: Progress Bar
+  - listitem:
+    - img
+    - text: Tabs
+  - listitem:
+    - img
+    - text: Tool Tips
+  - listitem:
+    - img
+    - text: Menu
+  - listitem:
+    - img
+    - text: Select Menu
+- img
+- text: Interactions
+- img
+- img
+- text: Book Store Application
+- img
+- iframe
+- heading "Select Menu" [level=1]
+- text: Select Value Select Option
+- textbox
+- text: Select One Select Title
+- textbox
+- text: Old Style Select Menu
+- combobox:
+  - option "Red" [selected]
+  - option "Blue"
+  - option "Green"
+  - option "Yellow"
+  - option "Purple"
+  - option "Black"
+  - option "White"
+  - option "Voilet"
+  - option "Indigo"
+  - option "Magenta"
+  - option "Aqua"
+- paragraph: Multiselect drop down
+- text: Select...
+- textbox
+- paragraph: Standard multi select
+- listbox:
+  - option "Volvo"
+  - option "Saab"
+  - option "Opel"
+  - option "Audi"
+- img "Build PlayWright tests with AI"
+- iframe
+- iframe
+- contentinfo: © 2013-2020 TOOLSQA.COM | ALL RIGHTS RESERVED.
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require('@playwright/test');
+   2 |
+   3 | class SelectMenuPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.url = 'https://demoqa.com/select-menu';
+   7 |     
+   8 |     // Новые локаторы (актуальные на 2023 год)
+   9 |     this.selectValueInput = page.locator('#react-select-2-input');
+  10 |     this.selectOneInput = page.locator('#react-select-3-input');
+  11 |     this.oldStyleSelect = page.locator('#oldSelectMenu');
+  12 |     this.multiSelectInput = page.locator('#react-select-4-input');
+  13 |     this.selectedValue = page.locator('.css-1uccc91-singleValue');
+  14 |   }
+  15 |
+  16 |   async navigate() {
+  17 |     await this.page.goto(this.url);
+  18 |     await this.page.waitForSelector('#oldSelectMenu', { state: 'visible' });
+  19 |   }
+  20 |
+  21 |   async selectGroupOption() {
+> 22 |     await this.selectValueInput.click();
+     |                                 ^ TimeoutError: locator.click: Timeout 15000ms exceeded.
+  23 |     await this.selectValueInput.fill('Group 2');
+  24 |     await this.page.keyboard.press('Enter');
+  25 |     await this.page.keyboard.press('Tab');
+  26 |   }
+  27 |
+  28 |   async selectOtherOption() {
+  29 |     await this.selectOneInput.click();
+  30 |     await this.selectOneInput.fill('Other');
+  31 |     await this.page.keyboard.press('Enter');
+  32 |   }
+  33 |
+  34 |   async selectOldStyleColor() {
+  35 |     await this.oldStyleSelect.selectOption('Green');
+  36 |   }
+  37 |
+  38 |   async selectMultiColors() {
+  39 |     await this.multiSelectInput.click();
+  40 |     await this.multiSelectInput.fill('Blue');
+  41 |     await this.page.keyboard.press('Enter');
+  42 |     await this.multiSelectInput.fill('Black');
+  43 |     await this.page.keyboard.press('Enter');
+  44 |   }
+  45 | }
+  46 |
+  47 | module.exports = SelectMenuPage;
+```
