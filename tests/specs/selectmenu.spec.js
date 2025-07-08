@@ -10,6 +10,7 @@ test.describe('DemoQA Select Menu Tests', () => {
     });
 
     test('should select group option', async () => {
+        //TODO rewrite selectMenuPage.selectGroupOption('Group 2, option 1')
         await selectMenuPage.selectGroupOption();
         await expect(selectMenuPage.selectedGroupValue).toHaveText('Group 2, option 1', { timeout: 10000 });
     });
@@ -22,12 +23,12 @@ test.describe('DemoQA Select Menu Tests', () => {
     test('should select old style color', async () => {
         await selectMenuPage.selectOldStyleColor();
         const value = await selectMenuPage.oldStyleSelect.inputValue();
-        expect(value).toBe('2'); 
+        expect(value).toBe('2');
     });
 
     test('should select multi colors', async () => {
         await selectMenuPage.selectMultiColors();
-        const options = await selectMenuPage.multiSelectDropdown.evaluate(select => 
+        const options = await selectMenuPage.multiSelectDropdown.evaluate(select =>
             Array.from(select.selectedOptions).map(o => o.value)
         );
         expect(options.sort()).toEqual(['opel', 'volvo'].sort());

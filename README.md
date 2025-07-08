@@ -161,3 +161,11 @@ Parallel Execution: 4 workers
 Error Handling: Automatic screenshots on failure
 
 Test Data: Fully auto-generated
+
+# Review 
+* remove reports
+* Move locators to the Page Object constructor seaction
+* It has been observed that there is inconsistency in the structure of the tests. While some validations and assertions are implemented within the Page Object Model (POM), others are directly written in the test files. This inconsistency can lead to confusion, reduced maintainability, and difficulty in scaling the test suite.
+* How to run separate test by keyword in crhomium or firefox with specific resolution?
+* Remove all 'expect' to the tests from Page Objects.
+* move generating data from test.spec. files to the src logic
