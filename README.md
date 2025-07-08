@@ -1,5 +1,6 @@
 # Automated Tests for DemoQA
 
+
 ## Project Overview
 Automated test suite for [demoqa.com](https://demoqa.com) using Playwright with Page Object Model pattern.
 
