@@ -1,0 +1,142 @@
+# Test info
+
+- Name: DemoQA TextBox Parameterized Tests >> Fill form with Long data @slow
+- Location: C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\textbox.spec.js:36:5
+
+# Error details
+
+```
+Error: Timed out 20000ms waiting for expect(locator).toBeVisible()
+
+Locator: locator('#output')
+Expected: visible
+Received: hidden
+Call log:
+  - expect.toBeVisible with timeout 20000ms
+  - waiting for locator('#output')
+    23 × locator resolved to <div id="output" class="mt-4 row">…</div>
+       - unexpected value "hidden"
+
+    at TextBoxPage.submitForm (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\pages\TextBoxPage.js:29:31)
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\textbox.spec.js:38:7
+```
+
+# Page snapshot
+
+```yaml
+- img "adplus-dvertising"
+- iframe
+- banner:
+  - link:
+    - /url: https://demoqa.com
+    - img
+- img
+- text: Elements
+- img
+- list:
+  - listitem:
+    - img
+    - text: Text Box
+  - listitem:
+    - img
+    - text: Check Box
+  - listitem:
+    - img
+    - text: Radio Button
+  - listitem:
+    - img
+    - text: Web Tables
+  - listitem:
+    - img
+    - text: Buttons
+  - listitem:
+    - img
+    - text: Links
+  - listitem:
+    - img
+    - text: Broken Links - Images
+  - listitem:
+    - img
+    - text: Upload and Download
+  - listitem:
+    - img
+    - text: Dynamic Properties
+- img
+- text: Forms
+- img
+- img
+- text: Alerts, Frame & Windows
+- img
+- img
+- text: Widgets
+- img
+- img
+- text: Interactions
+- img
+- img
+- text: Book Store Application
+- img
+- iframe
+- heading "Text Box" [level=1]
+- text: Full Name
+- textbox "Full Name": Dr. Melvin Kuhic
+- text: Email
+- textbox "name@example.com": test+Jamal.Schmidt68@yahoo.com
+- text: Current Address
+- textbox "Current Address": 709 Carroll Rue Second Line
+- text: Permanent Address
+- textbox: 1758 Green Close
+- button "Submit"
+- iframe
+- img "Build PlayWright tests with AI"
+- iframe
+- iframe
+- contentinfo: © 2013-2020 TOOLSQA.COM | ALL RIGHTS RESERVED.
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require('@playwright/test');
+   2 |
+   3 | class TextBoxPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.url = 'https://demoqa.com/text-box';
+   7 |     this.fullNameInput = page.locator('#userName');
+   8 |     this.emailInput = page.locator('#userEmail');
+   9 |     this.currentAddressInput = page.locator('#currentAddress');
+  10 |     this.permanentAddressInput = page.locator('#permanentAddress');
+  11 |     this.submitButton = page.locator('#submit');
+  12 |     this.output = page.locator('#output');
+  13 |   }
+  14 |
+  15 |   async navigate() {
+  16 |     await this.page.goto(this.url);
+  17 |     await expect(this.fullNameInput).toBeVisible({ timeout: 15000 });
+  18 |   }
+  19 |
+  20 |   async fillForm(data) {
+  21 |     await this.fullNameInput.fill(data.fullName);
+  22 |     await this.emailInput.fill(data.email);
+  23 |     await this.currentAddressInput.fill(data.currentAddress);
+  24 |     await this.permanentAddressInput.fill(data.permanentAddress);
+  25 |   }
+  26 |
+  27 |   async submitForm(timeout = 10000) {
+  28 |     await this.submitButton.click();
+> 29 |     await expect(this.output).toBeVisible({ timeout });
+     |                               ^ Error: Timed out 20000ms waiting for expect(locator).toBeVisible()
+  30 |   }
+  31 |
+  32 |   async verifyOutput(data) {
+  33 |     const outputText = await this.output.textContent();
+  34 |     expect(outputText).toContain(data.fullName);
+  35 |     expect(outputText).toContain(data.email);
+  36 |     expect(outputText).toContain(data.currentAddress);
+  37 |     expect(outputText).toContain(data.permanentAddress);
+  38 |   }
+  39 | }
+  40 |
+  41 | module.exports = TextBoxPage;
+```

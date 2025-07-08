@@ -1,0 +1,15 @@
+Navigation failed: ReferenceError: expect is not defined
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\tests\specs\tooltips.spec.js:13:13
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\testInfo.js:277:11
+    at TimeoutManager.withRunnable (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\timeoutManager.js:67:14)
+    at TestInfoImpl._runWithTimeout (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\testInfo.js:275:7)
+    at FixtureRunner.resolveParametersAndRunFunction (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\fixtureRunner.js:223:5)
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\workerMain.js:460:11
+    at TestInfoImpl._runAsStep (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\testInfo.js:266:7)
+    at WorkerMain._runEachHooksForSuites (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\workerMain.js:459:9)
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\workerMain.js:296:9
+    at TestInfoImpl._runAsStep (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\testInfo.js:266:7)
+    at C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\workerMain.js:292:7
+    at WorkerMain._runTest (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\workerMain.js:277:5)
+    at WorkerMain.runTestGroup (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\worker\workerMain.js:193:11)
+    at process.<anonymous> (C:\Users\aleksandr.shepilov\Desktop\Automated-Software-Tests\node_modules\playwright\lib\common\process.js:70:22)
