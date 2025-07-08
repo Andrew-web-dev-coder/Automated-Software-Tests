@@ -2,29 +2,27 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests/specs',
-  timeout: 60000,
+  timeout: 120000, // Увеличенный общий таймаут
   expect: {
     timeout: 10000
   },
-  
   fullyParallel: true,
   retries: 1,
-  workers: process.env.CI ? 2 : 4,
-  
+  workers: process.env.CI ? 2 : undefined,
   reporter: [
     ['html', { open: 'never' }],
     ['list']
   ],
-  
-  
   use: {
-    actionTimeout: 10000,
-    navigationTimeout: 30000,
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'off'
-  },
-
+  actionTimeout: 30000,
+  navigationTimeout: 60000,
+  trace: 'on-first-retry',
+  screenshot: 'only-on-failure',
+  // Добавьте это для стабильности в Chromium
+  launchOptions: {
+    args: ['--disable-dev-shm-usage']
+  }
+},
   projects: [
     {
       name: 'chromium',

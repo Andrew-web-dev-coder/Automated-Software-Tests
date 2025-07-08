@@ -13,32 +13,29 @@ class TextBoxPage {
   }
 
   async navigate() {
-    await this.page.goto(this.url);
+    await this.page.goto(this.url, { 
+      timeout: 60000,
+      waitUntil: 'domcontentloaded'
+    });
     await expect(this.fullNameInput).toBeVisible({ timeout: 30000 });
   }
 
   async fillForm(data) {
-    if (data.fullName) {
-      await this.fullNameInput.fill(data.fullName);
-      await this.page.waitForTimeout(500);
-    }
-    if (data.email) {
-      await this.emailInput.fill(data.email);
-      await this.page.waitForTimeout(500);
-    }
-    if (data.currentAddress) {
-      await this.currentAddressInput.fill(data.currentAddress);
-      await this.page.waitForTimeout(500);
-    }
-    if (data.permanentAddress) {
-      await this.permanentAddressInput.fill(data.permanentAddress);
-      await this.page.waitForTimeout(500);
-    }
+    if (data.fullName) await this.fullNameInput.fill(data.fullName);
+    if (data.email) await this.emailInput.fill(data.email);
+    if (data.currentAddress) await this.currentAddressInput.fill(data.currentAddress);
+    if (data.permanentAddress) await this.permanentAddressInput.fill(data.permanentAddress);
   }
 
   async submitForm() {
     await this.submitButton.click();
-    await this.page.waitForTimeout(2000);
+    
+    // Добавлено явное ожидание появления output
+    await this.page.waitForSelector('#output', { 
+      state: 'visible',
+      timeout: 30000 
+    });
+    
     await expect(this.output).toBeVisible({ timeout: 30000 });
   }
 
