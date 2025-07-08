@@ -30,7 +30,7 @@ class TextBoxPage {
   async submitForm() {
     await this.submitButton.click();
     
-    // Добавлено явное ожидание появления output
+  
     await this.page.waitForSelector('#output', { 
       state: 'visible',
       timeout: 30000 

@@ -2,7 +2,7 @@ const { defineConfig, devices } = require('@playwright/test');
 
 module.exports = defineConfig({
   testDir: './tests/specs',
-  timeout: 120000, // Увеличенный общий таймаут
+  timeout: 120000, 
   expect: {
     timeout: 10000
   },
@@ -18,7 +18,7 @@ module.exports = defineConfig({
   navigationTimeout: 60000,
   trace: 'on-first-retry',
   screenshot: 'only-on-failure',
-  // Добавьте это для стабильности в Chromium
+
   launchOptions: {
     args: ['--disable-dev-shm-usage']
   }
