@@ -12,12 +12,12 @@ class SelectMenuPage {
         this.multiSelectDropdown = page.locator('select[id="cars"]');
 
         
-        this.selectedGroupValue = page.locator('//div[@id="withOptGroup"]//div[contains(@class, "-singleValue")]');
-        this.selectedOneValue = page.locator('//div[@id="selectOne"]//div[contains(@class, "-singleValue")]');
+        this.selectedGroupValue = page.locator('//div[@id="withOptGroup"]//div[contains(text(), "Group")]');
+        this.selectedOneValue = page.locator('//div[@id="selectOne"]//div[contains(text(), "Other")]');
+
         
-        
-        this.groupOption = page.locator('div[id="react-select-2-option-1-0"]');
-        this.otherOption = page.locator('div[id="react-select-3-option-0-5"]');
+        this.groupOption = page.locator('//div[contains(@class, "option") and text()="Group 2, option 1"]');
+        this.otherOption = page.locator('//div[contains(@class, "option") and text()="Other"]');
     }
 
     async navigate() {
@@ -29,23 +29,26 @@ class SelectMenuPage {
     }
 
     async selectGroupOption() {
+        await this.selectValueDropdown.waitFor();
         await this.selectValueDropdown.click();
-        await expect(this.groupOption).toBeVisible();
+        await this.groupOption.waitFor();
         await this.groupOption.click();
         await expect(this.selectedGroupValue).toHaveText('Group 2, option 1');
     }
 
     async selectOtherOption() {
+        await this.selectOneDropdown.waitFor();
         await this.selectOneDropdown.click();
-        await expect(this.otherOption).toBeVisible();
+        await this.otherOption.waitFor();
         await this.otherOption.click();
         await expect(this.selectedOneValue).toHaveText('Other');
     }
 
     async selectOldStyleColor() {
+        const GREEN_OPTION_VALUE = '2'; 
         await this.oldStyleSelect.selectOption('Green');
         const value = await this.oldStyleSelect.inputValue();
-        expect(value).toBe('2'); 
+        expect(value).toBe(GREEN_OPTION_VALUE);
     }
 
     async selectMultiColors() {
