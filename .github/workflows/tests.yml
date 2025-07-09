@@ -35,12 +35,6 @@ jobs:
           npx playwright install ${{ matrix.browser }}
           npx playwright install-deps ${{ matrix.browser }}
           
-      - name: Clear environment
-        run: |
-          npx playwright eval -c "await page.mouse.move(0, 0)"
-          npx playwright eval -c "await page.evaluate(() => localStorage.clear())"
-          npx playwright eval -c "await page.evaluate(() => sessionStorage.clear())"
-          
       - name: Run tests
         run: |
           npx playwright test --project=${{ matrix.browser }} --workers=2
