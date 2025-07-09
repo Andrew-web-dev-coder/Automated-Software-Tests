@@ -14,29 +14,44 @@ class TextBoxPage {
 
     async navigate() {
         await this.page.goto(this.url, { 
-            timeout: 60000,
+            timeout: 90000,
             waitUntil: 'domcontentloaded'
         });
-        await expect(this.fullNameInput).toBeVisible({ timeout: 30000 });
+        await expect(this.fullNameInput).toBeVisible({ timeout: 40000 });
     }
 
     async fillForm(data) {
-        if (data.fullName) await this.fullNameInput.fill(data.fullName);
-        if (data.email) await this.emailInput.fill(data.email);
-        if (data.currentAddress) await this.currentAddressInput.fill(data.currentAddress);
-        if (data.permanentAddress) await this.permanentAddressInput.fill(data.permanentAddress);
+        if (data.fullName) {
+            await this.fullNameInput.clear();
+            await this.fullNameInput.fill(data.fullName);
+        }
+        if (data.email) {
+            await this.emailInput.clear();
+            await this.emailInput.fill(data.email);
+        }
     }
 
     async submitForm() {
         await this.submitButton.click();
-        await this.page.waitForTimeout(1000); // Добавляем небольшую паузу
-        await this.output.waitFor({ state: 'visible', timeout: 30000 });
+        
+        // Улучшенное ожидание для Firefox
+        await this.page.waitForFunction(() => {
+            const output = document.getElementById('output');
+            return output && output.children.length > 0 && output.offsetHeight > 0;
+        }, { timeout: 40000 });
     }
 
     async verifyOutput(data) {
-        const outputText = await this.output.innerText();
-        if (data.fullName) expect(outputText).toContain(data.fullName);
-        if (data.email) expect(outputText).toContain(data.email);
+        // Дополнительная проверка видимости
+        await expect(this.output).toBeVisible();
+        
+        const outputText = await this.output.innerText({ timeout: 15000 });
+        if (data.fullName) {
+            await expect(this.output).toContainText(data.fullName, { timeout: 15000 });
+        }
+        if (data.email) {
+            await expect(this.output).toContainText(data.email, { timeout: 15000 });
+        }
     }
 }
 

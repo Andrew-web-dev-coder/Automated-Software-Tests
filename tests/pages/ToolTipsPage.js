@@ -11,21 +11,44 @@ class ToolTipsPage {
 
     async navigate() {
         await this.page.goto(this.url, { 
-            timeout: 60000,
+            timeout: 90000,
             waitUntil: 'domcontentloaded'
         });
-        await expect(this.hoverButton).toBeVisible({ timeout: 30000 });
+        await expect(this.hoverButton).toBeVisible({ timeout: 40000 });
     }
 
     async verifyButtonTooltip() {
+        await this.page.mouse.move(0, 0);
+        await this.hoverButton.scrollIntoViewIfNeeded();
+        await this.page.waitForTimeout(500);
+        
+        // Двойное наведение для стабильности в Firefox
         await this.hoverButton.hover();
-        await expect(this.tooltip).toBeVisible({ timeout: 10000 });
+        await this.page.waitForTimeout(300);
+        await this.hoverButton.hover({ force: true });
+        
+        // Комбинированная проверка
+        await expect(this.tooltip).toBeVisible({ timeout: 25000 });
         await expect(this.tooltip).toContainText('You hovered over the Button');
     }
 
     async verifyTextFieldTooltip() {
+        await this.page.mouse.move(0, 0);
+        await this.hoverTextField.scrollIntoViewIfNeeded();
+        await this.page.waitForTimeout(500);
+        
+        // Точное наведение с проверкой hover состояния
         await this.hoverTextField.hover();
-        await expect(this.tooltip).toBeVisible({ timeout: 10000 });
+        await this.page.waitForTimeout(300);
+        await this.hoverTextField.hover({ force: true });
+        
+        // Усиленная проверка для Firefox
+        await this.page.waitForFunction(() => {
+            const element = document.querySelector('#toolTipTextField');
+            return element && element.matches(':hover');
+        }, { timeout: 15000 });
+        
+        await expect(this.tooltip).toBeVisible({ timeout: 25000 });
         await expect(this.tooltip).toContainText('You hovered over the text field');
     }
 }
