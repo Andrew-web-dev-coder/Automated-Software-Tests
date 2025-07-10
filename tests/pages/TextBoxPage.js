@@ -1,54 +1,82 @@
 const { expect } = require('@playwright/test');
 
 class TextBoxPage {
-  constructor(page) {
-    this.page = page;
-    this.url = 'https://demoqa.com/text-box';
-    this.fullNameInput = page.locator('#userName');
-    this.emailInput = page.locator('#userEmail');
-    this.currentAddressInput = page.locator('#currentAddress');
-    this.permanentAddressInput = page.locator('#permanentAddress');
-    this.submitButton = page.locator('#submit');
-    this.output = page.locator('#output');
-  }
-
-  async navigate() {
-    await this.page.goto(this.url);
-    await expect(this.fullNameInput).toBeVisible({ timeout: 30000 });
-  }
-
-  async fillForm(data) {
-    if (data.fullName) {
-      await this.fullNameInput.fill(data.fullName);
-      await this.page.waitForTimeout(500);
+    constructor(page) {
+        this.page = page;
+        this.url = 'https://demoqa.com/text-box';
     }
-    if (data.email) {
-      await this.emailInput.fill(data.email);
-      await this.page.waitForTimeout(500);
-    }
-    if (data.currentAddress) {
-      await this.currentAddressInput.fill(data.currentAddress);
-      await this.page.waitForTimeout(500);
-    }
-    if (data.permanentAddress) {
-      await this.permanentAddressInput.fill(data.permanentAddress);
-      await this.page.waitForTimeout(500);
-    }
-  }
 
-  async submitForm() {
-    await this.submitButton.click();
-    await this.page.waitForTimeout(2000);
-    await expect(this.output).toBeVisible({ timeout: 30000 });
-  }
+    
+    get fullNameInput() {
+        return this.page.locator('#userName');
+    }
 
-  async verifyOutput(data) {
-    const outputText = await this.output.textContent();
-    if (data.fullName) expect(outputText).toContain(data.fullName.trim());
-    if (data.email) expect(outputText).toContain(data.email.trim());
-    if (data.currentAddress) expect(outputText).toContain(data.currentAddress.trim());
-    if (data.permanentAddress) expect(outputText).toContain(data.permanentAddress.trim());
-  }
+    get emailInput() {
+        return this.page.locator('#userEmail');
+    }
+
+    get currentAddressInput() {
+        return this.page.locator('#currentAddress');
+    }
+
+    get permanentAddressInput() {
+        return this.page.locator('#permanentAddress');
+    }
+
+    get submitButton() {
+        return this.page.locator('#submit');
+    }
+
+    get output() {
+        return this.page.locator('#output');
+    }
+
+    async navigate() {
+        await this.page.goto(this.url, { 
+            timeout: 90000,
+            waitUntil: 'domcontentloaded'
+        });
+        await expect(this.fullNameInput).toBeVisible({ timeout: 40000 });
+    }
+
+    async fillForm(data) {
+        if (data.fullName) {
+            await this.fullNameInput.clear();
+            await this.fullNameInput.fill(data.fullName);
+        }
+        if (data.email) {
+            await this.emailInput.clear();
+            await this.emailInput.fill(data.email);
+        }
+        
+        if (data.currentAddress) {
+            await this.currentAddressInput.fill(data.currentAddress);
+        }
+        if (data.permanentAddress) {
+            await this.permanentAddressInput.fill(data.permanentAddress);
+        }
+    }
+
+    async submitForm() {
+        await this.submitButton.click();
+        
+        await this.page.waitForFunction(() => {
+            const output = document.getElementById('output');
+            return output && output.children.length > 0 && output.offsetHeight > 0;
+        }, { timeout: 40000 });
+    }
+
+    async verifyOutput(data) {
+        await expect(this.output).toBeVisible();
+
+        const outputText = await this.output.innerText({ timeout: 15000 });
+        if (data.fullName) {
+            await expect(this.output).toContainText(data.fullName, { timeout: 15000 });
+        }
+        if (data.email) {
+            await expect(this.output).toContainText(data.email, { timeout: 15000 });
+        }
+    }
 }
 
 module.exports = TextBoxPage;

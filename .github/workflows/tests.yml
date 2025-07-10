@@ -1,31 +1,60 @@
 name: Playwright Tests
 
-on: [push, pull_request]
+on: 
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   test:
+    timeout-minutes: 20
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        browser: [chromium, firefox]
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
+          cache: 'npm'
+          
       - name: Install dependencies
         run: |
           npm ci
-          npx playwright install
-
-      - name: Run Playwright tests
-        run: npx playwright test
-
-      - name: Upload test report
+          npx playwright install --with-deps
+          npx playwright install ffmpeg
+          
+      - name: Prepare browsers
+        run: |
+          npx playwright install ${{ matrix.browser }}
+          npx playwright install-deps ${{ matrix.browser }}
+          
+      - name: Run tests
+        run: |
+          npx playwright test --project=${{ matrix.browser }} --workers=2
+          echo "Test exit code: $?"
+          
+      - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: test-results-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+            test-results/**/*.png
+            test-results/**/*.webm
+            test-results/**/*.zip
+            
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report-${{ matrix.browser }}
           path: playwright-report/

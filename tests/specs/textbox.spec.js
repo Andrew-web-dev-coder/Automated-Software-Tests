@@ -2,17 +2,23 @@ const { test } = require('@playwright/test');
 const TextBoxPage = require('../pages/TextBoxPage');
 const { faker } = require('@faker-js/faker');
 
-
 const generateTestData = (options = {}) => {
   const maxLength = options.long ? 50 : 30;
-  return {
+  const data = {
     fullName: faker.person.fullName().substring(0, maxLength),
     email: faker.internet.email().substring(0, maxLength),
     currentAddress: faker.location.streetAddress().substring(0, maxLength * 2),
     permanentAddress: faker.location.streetAddress().substring(0, maxLength * 2)
   };
-};
 
+  if (options.onlyRequired) {
+    return {
+      fullName: data.fullName,
+      email: data.email
+    };
+  }
+  return data;
+};
 
 const testCases = [
   {
@@ -24,6 +30,7 @@ const testCases = [
     name: 'Long data',
     options: { long: true },
     description: 'should submit form with long data',
+    timeout: 60000,
     slow: true
   },
   {
@@ -41,36 +48,12 @@ test.describe('DemoQA TextBox Tests', () => {
     await textBoxPage.navigate();
   });
 
-  
-  test('Fill form with standard data', async () => {
-    const data = generateTestData();
-    await textBoxPage.fillForm(data);
-    await textBoxPage.submitForm();
-    await textBoxPage.verifyOutput(data);
-  });
-
-  test('Fill form with long data @slow', async () => {
-    const data = generateTestData({ long: true });
-    await textBoxPage.fillForm(data);
-    await textBoxPage.submitForm();
-    await textBoxPage.verifyOutput(data);
-  });
-
-  
   for (const testCase of testCases) {
     test(testCase.description + (testCase.slow ? ' @slow' : ''), async () => {
-      let data = generateTestData(testCase.options);
-      
-      if (testCase.options.onlyRequired) {
-        data = {
-          fullName: data.fullName,
-          email: data.email
-        };
-      }
-
+      const data = generateTestData(testCase.options);
       await textBoxPage.fillForm(data);
       await textBoxPage.submitForm();
       await textBoxPage.verifyOutput(data);
-    });
+    }, testCase.timeout ? { timeout: testCase.timeout } : {});
   }
 });
