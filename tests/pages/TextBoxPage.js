@@ -4,12 +4,31 @@ class TextBoxPage {
     constructor(page) {
         this.page = page;
         this.url = 'https://demoqa.com/text-box';
-        this.fullNameInput = page.locator('#userName');
-        this.emailInput = page.locator('#userEmail');
-        this.currentAddressInput = page.locator('#currentAddress');
-        this.permanentAddressInput = page.locator('#permanentAddress');
-        this.submitButton = page.locator('#submit');
-        this.output = page.locator('#output');
+    }
+
+    
+    get fullNameInput() {
+        return this.page.locator('#userName');
+    }
+
+    get emailInput() {
+        return this.page.locator('#userEmail');
+    }
+
+    get currentAddressInput() {
+        return this.page.locator('#currentAddress');
+    }
+
+    get permanentAddressInput() {
+        return this.page.locator('#permanentAddress');
+    }
+
+    get submitButton() {
+        return this.page.locator('#submit');
+    }
+
+    get output() {
+        return this.page.locator('#output');
     }
 
     async navigate() {
@@ -29,12 +48,18 @@ class TextBoxPage {
             await this.emailInput.clear();
             await this.emailInput.fill(data.email);
         }
+        
+        if (data.currentAddress) {
+            await this.currentAddressInput.fill(data.currentAddress);
+        }
+        if (data.permanentAddress) {
+            await this.permanentAddressInput.fill(data.permanentAddress);
+        }
     }
 
     async submitForm() {
         await this.submitButton.click();
         
-        // Улучшенное ожидание для Firefox
         await this.page.waitForFunction(() => {
             const output = document.getElementById('output');
             return output && output.children.length > 0 && output.offsetHeight > 0;
@@ -42,9 +67,8 @@ class TextBoxPage {
     }
 
     async verifyOutput(data) {
-        // Дополнительная проверка видимости
         await expect(this.output).toBeVisible();
-        
+
         const outputText = await this.output.innerText({ timeout: 15000 });
         if (data.fullName) {
             await expect(this.output).toContainText(data.fullName, { timeout: 15000 });

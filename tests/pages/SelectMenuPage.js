@@ -4,20 +4,39 @@ class SelectMenuPage {
     constructor(page) {
         this.page = page;
         this.url = 'https://demoqa.com/select-menu';
+    }
 
-        
-        this.selectValueDropdown = page.locator('div[id="withOptGroup"]');
-        this.selectOneDropdown = page.locator('div[id="selectOne"]');
-        this.oldStyleSelect = page.locator('select[id="oldSelectMenu"]');
-        this.multiSelectDropdown = page.locator('select[id="cars"]');
+    
+    get selectValueDropdown() {
+        return this.page.locator('div[id="withOptGroup"]');
+    }
 
-        
-        this.selectedGroupValue = page.locator('//div[@id="withOptGroup"]//div[contains(text(), "Group")]');
-        this.selectedOneValue = page.locator('//div[@id="selectOne"]//div[contains(text(), "Other")]');
+    get selectOneDropdown() {
+        return this.page.locator('div[id="selectOne"]');
+    }
 
-        
-        this.groupOption = page.locator('//div[contains(@class, "option") and text()="Group 2, option 1"]');
-        this.otherOption = page.locator('//div[contains(@class, "option") and text()="Other"]');
+    get oldStyleSelect() {
+        return this.page.locator('select[id="oldSelectMenu"]');
+    }
+
+    get multiSelectDropdown() {
+        return this.page.locator('select[id="cars"]');
+    }
+
+    get selectedGroupValue() {
+        return this.page.locator('//div[@id="withOptGroup"]//div[contains(text(), "Group")]');
+    }
+
+    get selectedOneValue() {
+        return this.page.locator('//div[@id="selectOne"]//div[contains(text(), "Other")]');
+    }
+
+    get groupOption() {
+        return this.page.locator('//div[contains(@class, "option") and text()="Group 2, option 1"]');
+    }
+
+    get otherOption() {
+        return this.page.locator('//div[contains(@class, "option") and text()="Other"]');
     }
 
     async navigate() {
@@ -53,7 +72,7 @@ class SelectMenuPage {
 
     async selectMultiColors() {
         await this.multiSelectDropdown.selectOption(['volvo', 'opel']);
-        const options = await this.multiSelectDropdown.evaluate(select => 
+        const options = await this.multiSelectDropdown.evaluate(select =>
             Array.from(select.selectedOptions).map(o => o.value)
         );
         expect(options.sort()).toEqual(['opel', 'volvo'].sort());

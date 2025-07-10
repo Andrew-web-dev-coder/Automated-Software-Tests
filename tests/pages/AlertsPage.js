@@ -4,7 +4,11 @@ class AlertsPage {
   constructor(page) {
     this.page = page;
     this.url = 'https://demoqa.com/alerts';
-    this.alertButton = page.locator('#alertButton');
+  }
+
+  
+  get alertButton() {
+    return this.page.locator('#alertButton');
   }
 
   async navigate() {
